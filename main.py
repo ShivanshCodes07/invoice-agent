@@ -8,6 +8,31 @@ app = FastAPI(title="A2A Invoice Agent")
 
 DB = "invoice_state.db"
 
+AGENT_CARD = {
+    "protocolVersion": "0.3.0",
+    "name": "A2A Invoice Agent",
+    "description": "An agent for invoice processing with approval checks.",
+    "url": "https://invoice-agent-cjsi.onrender.com/a2a/",
+    "preferredTransport": "JSONRPC",
+    "version": "1.0.0",
+    "capabilities": {},
+    "defaultInputModes": ["application/json"],
+    "defaultOutputModes": ["application/json"],
+    "skills": [
+        {
+            "id": "process_invoice",
+            "name": "Process Invoice",
+            "description": "Evaluate invoice approval status and limits.",
+            "tags": ["invoice", "approval"],
+            "examples": ["Process an invoice"]
+        }
+    ]
+}
+
+@app.get("/.well-known/agent-card.json")
+def agent_card():
+    return AGENT_CARD
+
 
 def init_db():
     with sqlite3.connect(DB) as con:
